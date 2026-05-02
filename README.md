@@ -1,8 +1,9 @@
-🖥️ ## presenSee-back
+# FRONT-END-PRESENSEE
+# FRONT-END-PRESENSEE
 
-# Sistema de Monitoramento de Frequência Escolar
+# 📱 Sistema de Monitoramento de Frequência Escolar
 
-##  Sobre o projeto
+## 📌 Sobre o projeto
 
 Este projeto tem como objetivo desenvolver um sistema inteligente de monitoramento da frequência de alunos do ensino médio, com foco na **identificação precoce de evasão escolar**.
 
@@ -10,7 +11,7 @@ A aplicação permite registrar presença por meio de tecnologia (como biometria
 
 ---
 
-##  Objetivos
+## 🎯 Objetivos
 
 ### Objetivo geral
 
@@ -26,7 +27,7 @@ Desenvolver uma solução que auxilie escolas na redução da evasão escolar po
 
 ---
 
-##  Público-alvo
+## 👥 Público-alvo
 
 * Escolas de ensino médio
 * Monitores pedagógicos
@@ -35,7 +36,7 @@ Desenvolver uma solução que auxilie escolas na redução da evasão escolar po
 
 ---
 
-##  Funcionalidades
+## ⚙️ Funcionalidades
 
 * ✅ Cadastro de alunos
 * ✅ Cadastro de turmas
@@ -47,7 +48,7 @@ Desenvolver uma solução que auxilie escolas na redução da evasão escolar po
 
 ---
 
-##  Regras de negócio
+## 🧠 Regras de negócio
 
 * Aluno com mais de **25% de faltas** → Alerta de evasão
 * **4 faltas consecutivas** → Alerta imediato
@@ -55,7 +56,7 @@ Desenvolver uma solução que auxilie escolas na redução da evasão escolar po
 
 ---
 
-##  Indicadores
+## 📊 Indicadores
 
 * Taxa de frequência (%)
 * Número de alunos em risco
@@ -64,7 +65,7 @@ Desenvolver uma solução que auxilie escolas na redução da evasão escolar po
 
 ---
 
-## Arquitetura do projeto
+## 🏗️ Arquitetura do projeto
 
 ```
 /monitoramento-escolar
@@ -76,7 +77,7 @@ Desenvolver uma solução que auxilie escolas na redução da evasão escolar po
 
 ---
 
-##  Frontend Mobile
+## 📱 Frontend Mobile
 
 Desenvolvido com:
 
@@ -97,7 +98,7 @@ src/
 
 ---
 
-##  Como rodar o projeto
+## 🚀 Como rodar o projeto
 
 ### Pré-requisitos
 
@@ -122,7 +123,7 @@ npm start
 
 ---
 
-##  Segurança
+## 🔐 Segurança
 
 * Autenticação de usuários
 * Controle de acesso por perfil (professor, gestor)
@@ -131,7 +132,7 @@ npm start
 
 ---
 
-##  Equipe
+## 👨‍💻 Equipe
 
 * Miguel Augusto
 * Echilin Taina
@@ -144,13 +145,13 @@ npm start
 
 ---
 
-##  Status do projeto
+## 📌 Status do projeto
 
 🚧 Em desenvolvimento (Projeto Integrador IV)
 
 ---
 
-##  Contribuição
+## 💡 Contribuição
 
 1. Crie uma branch (`feature/nome-da-feature`)
 2. Faça suas alterações
