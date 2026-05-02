@@ -1,5 +1,4 @@
 # FRONT-END-PRESENSEE
-# FRONT-END-PRESENSEE
 
 # 📱 Sistema de Monitoramento de Frequência Escolar
 
