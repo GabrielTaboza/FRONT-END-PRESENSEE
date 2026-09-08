@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom"
 import api from "../services/api"
 import "../styles/Login.css"
 
+import imagemLogin from "../assets/login.jpg"
+
+
 function Login() {
 
   const navigate = useNavigate()
@@ -25,6 +28,7 @@ function Login() {
 
     }
 
+
     try {
 
       const response = await api.post("/auth/login", {
@@ -34,19 +38,17 @@ function Login() {
 
       })
 
+
       localStorage.setItem(
         "token",
         response.data.token
       )
 
-      localStorage.setItem(
-        "usuario",
-        JSON.stringify(response.data.usuario)
-      )
 
       navigate("/dashboard")
 
     }
+
 
     catch (error) {
 
@@ -59,125 +61,122 @@ function Login() {
   }
 
 
-  function handleDemoLogin() {
+return (
 
-    localStorage.setItem(
-      "token",
-      "demo-token"
-    )
-
-    localStorage.setItem(
-      "usuario",
-      JSON.stringify({
-        nome: "Usuário de demonstração",
-        perfil: "secretaria"
-      })
-    )
-
-    navigate("/dashboard")
-
-  }
+  <div className="login-container">
 
 
-  return (
+    <img
+      className="login-background"
+      src={imagemLogin}
+      alt="PresenSee"
+    />
 
-    <div className="login-container">
 
-      <div className="left-side">
+    <div className="login-card">
 
-        <h1>
-          Presen<span>See</span>
-        </h1>
 
-        <p>
-          Sistema inteligente de monitoramento escolar
+      <h1>
+        Login
+      </h1>
+
+
+      <form onSubmit={handleLogin}>
+
+
+        <label>
+          Email
+        </label>
+
+
+        <input
+          className="login-input"
+          type="email"
+          placeholder="Digite seu email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+
+        <label>
+          Senha
+        </label>
+
+
+        <input
+          className="login-input"
+          type={mostrarSenha ? "text" : "password"}
+          placeholder="Digite sua senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+        />
+
+
+        <p
+          className="show-password"
+          onClick={() => setMostrarSenha(!mostrarSenha)}
+        >
+
+          {mostrarSenha
+            ? "Ocultar senha"
+            : "Mostrar senha"
+          }
+
         </p>
 
-      </div>
 
+        {
+          erro && (
 
-      <div className="right-side">
-
-        <div className="login-card">
-
-          <h2>
-            Entrar
-          </h2>
-
-
-          <form onSubmit={handleLogin}>
-
-            <input
-              type="email"
-              placeholder="Digite seu email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-
-            <input
-              type={mostrarSenha ? "text" : "password"}
-              placeholder="Digite sua senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
-
-
-            <p
-              className="show-password"
-              onClick={() => setMostrarSenha(!mostrarSenha)}
-            >
-              {mostrarSenha
-                ? "Ocultar senha"
-                : "Mostrar senha"
-              }
+            <p className="error-message">
+              {erro}
             </p>
 
-
-            {
-              erro && (
-
-                <p className="error-message">
-                  {erro}
-                </p>
-
-              )
-            }
+          )
+        }
 
 
-            <button type="submit">
-              Entrar
-            </button>
+        <button
+          className="login-button"
+          type="submit"
+        >
+
+          Entrar
+
+        </button>
+
+        <button
+          type="button"
+          className="create-account"
+          onClick={() => {
+           console.log("BOTAO FUNCIONOU")
+           navigate("/dashboard")
+           }}
+>
+  Entrar como visitante
+</button>
 
 
-            <button
-              type="button"
-              className="demo-button"
-              onClick={handleDemoLogin}
-            >
-              Entrar em modo demonstração
-            </button>
+
+        <p className="login-info-text">
+
+          Contas disponibilizadas pela
+          administração escolar.
+
+        </p>
 
 
-            <p className="forgot-password">
-              Esqueci minha senha
-            </p>
+      </form>
 
-
-            <p className="login-info">
-              Contas disponibilizadas pela administração escolar.
-            </p>
-
-          </form>
-
-        </div>
-
-      </div>
 
     </div>
 
-  )
+
+  </div>
+
+)
 
 }
+
 
 export default Login
