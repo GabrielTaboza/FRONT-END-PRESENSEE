@@ -143,18 +143,28 @@ return (
 
           Entrar
 
-        </button>
+         </button>
 
-        <button
-          type="button"
-          className="create-account"
-          onClick={() => {
-           console.log("BOTAO FUNCIONOU")
-           navigate("/dashboard")
-           }}
+      <button
+  type="button"
+  className="create-account"
+  onClick={() => {
+    localStorage.setItem("token", "token-demo")
+
+    localStorage.setItem(
+      "usuario",
+      JSON.stringify({
+        nome: "Visitante",
+        perfil: "Demonstração"
+      })
+    )
+
+    navigate("/dashboard")
+  }}
 >
   Entrar como visitante
 </button>
+
 
 
 

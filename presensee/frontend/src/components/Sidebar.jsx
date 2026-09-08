@@ -1,10 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom"
-import { logout } from "../services/auth"
+import { getUsuario, logout } from "../services/auth"
 
 function Sidebar() {
 
   const navigate = useNavigate()
-
+  const usuario = getUsuario()
 
   function handleLogout() {
 
@@ -17,109 +17,107 @@ function Sidebar() {
 
   return (
 
-    <div className="sidebar">
-
-      <h2 className="logo">
-        PresenSee
-      </h2>
+    <aside className="sidebar">
 
 
-      <ul className="menu">
+      {/* LOGO */}
 
-        <li>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            📊 Dashboard
-          </NavLink>
-        </li>
+      <div className="sidebar-logo">
+
+        <h2>
+          Presen<span>See</span>
+        </h2>
+
+      </div>
 
 
-        <li>
-          <NavLink
-            to="/alunos"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            👨‍🎓 Alunos
-          </NavLink>
-        </li>
+      {/* MENU */}
+
+      <nav className="sidebar-menu">
+
+        <NavLink to="/dashboard">
+          <span>⌂</span>
+          Home
+        </NavLink>
 
 
-        <li>
-          <NavLink
-            to="/novo-aluno"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            ➕ Cadastrar Aluno
-          </NavLink>
-        </li>
+        <NavLink to="/alunos">
+          <span>♙</span>
+          Alunos
+        </NavLink>
 
 
-        <li>
-          <NavLink
-            to="/turmas"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            🏫 Turmas
-          </NavLink>
-        </li>
+        <NavLink to="/alertas">
+          <span>⚑</span>
+          Alertas
+        </NavLink>
 
 
-        <li>
-          <NavLink
-            to="/frequencia"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            📅 Frequência
-          </NavLink>
-        </li>
+        <NavLink to="/frequencia">
+          <span>◉</span>
+          Diário do monitor
+        </NavLink>
 
 
-        <li>
-          <NavLink
-            to="/alertas"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            ⚠️ Alertas
-          </NavLink>
-        </li>
+        <NavLink to="/novo-aluno">
+          <span>✚</span>
+          Intervenção
+        </NavLink>
 
 
-        <li>
-          <NavLink
-            to="/relatorios"
-            className={({ isActive }) =>
-              isActive ? "active" : ""
-            }
-          >
-            📑 Relatórios
-          </NavLink>
-        </li>
+        <NavLink to="/turmas">
+          <span>♧</span>
+          Turma
+        </NavLink>
 
-      </ul>
 
+        <NavLink to="/relatorios">
+          <span>▣</span>
+          Relatório
+        </NavLink>
+
+      </nav>
+
+
+      {/* USUÁRIO */}
+
+      <div className="sidebar-user">
+
+        <div className="sidebar-avatar">
+          👨‍💻
+        </div>
+
+        <div>
+
+          <strong>
+            {usuario?.nome || "Marcos A."}
+          </strong>
+
+          <span>
+            Monitor
+          </span>
+
+        </div>
+
+      </div>
+
+
+      {/* SAIR */}
 
       <button
         className="logout-button"
         onClick={handleLogout}
       >
-        🚪 Sair
+
+        ↪
+        <span>
+          Encerrar Sessão
+        </span>
+
       </button>
 
-    </div>
+
+    </aside>
 
   )
 

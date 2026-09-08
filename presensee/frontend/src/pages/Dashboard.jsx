@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import api from "../services/api"
 import { getUsuario, getToken } from "../services/auth"
 
-
 function Dashboard() {
 
   const [dados, setDados] = useState(null)
@@ -13,73 +12,88 @@ function Dashboard() {
 
   const alertas = [
     {
-      aluno: "Gabriel Soares",
-      motivo: "4 faltas consecutivas"
+      aluno: "João Silva",
+      percentual: "87%",
+      nivel: "alto"
     },
-
     {
-      aluno: "Pedro Henrique",
-      motivo: "27% de faltas"
+      aluno: "Marcos Heitor",
+      percentual: "82%",
+      nivel: "alto"
     },
-
     {
-      aluno: "Miguel Augusto",
-      motivo: "Risco de evasão escolar"
+      aluno: "João Silva",
+      percentual: "65%",
+      nivel: "medio"
     }
   ]
 
-  
+  const riscoPorTurma = [
+    {
+      turma: "3A",
+      percentual: 70
+    },
+    {
+      turma: "2B",
+      percentual: 50
+    },
+    {
+      turma: "1A",
+      percentual: 30
+    }
+  ]
 
 
   useEffect(() => {
 
     setUsuario(getUsuario())
-  
 
   }, [])
 
 
-useEffect(() => {
+  useEffect(() => {
 
-  const token = getToken()
+    const token = getToken()
 
+    if (token === "token-demo") {
 
-  if (token === "demo-token") {
-
-    setDados({
-      totalAlunos: 120,
-      alunosRisco: 12,
-      taxaFrequenciaGeral: 87,
-      alertasAbertos: 5
-    })
-
-    setCarregando(false)
-
-    return
-  }
-
-
-  api.get("/dashboard/resumo")
-
-    .then(response => {
-
-      setDados(response.data)
+      setDados({
+        totalAlunos: 350,
+        alunosRisco: 20,
+        alunosAltoRisco: 7,
+        taxaFrequenciaGeral: 95,
+        alertasAbertos: 5
+      })
 
       setCarregando(false)
 
-    })
+      return
+    }
 
-    .catch(error => {
 
-      console.log(error)
+    api.get("/dashboard/resumo")
 
-      setErro("Não foi possível carregar os dados do dashboard.")
+      .then(response => {
 
-      setCarregando(false)
+        setDados(response.data)
 
-    })
+        setCarregando(false)
 
-}, [])
+      })
+
+      .catch(error => {
+
+        console.log(error)
+
+        setErro(
+          "Não foi possível carregar os dados do dashboard."
+        )
+
+        setCarregando(false)
+
+      })
+
+  }, [])
 
 
   if (carregando) {
@@ -96,150 +110,277 @@ useEffect(() => {
 
   }
 
+
   if (erro) {
 
+    return (
+      <DashboardLayout>
+
+        <div className="dashboard-error">
+
+          ⚠️ {erro}
+
+        </div>
+
+      </DashboardLayout>
+    )
+
+  }
+
+
   return (
+
     <DashboardLayout>
 
-      <div className="dashboard-error">
+      <div className="dashboard-page">
 
-        ⚠️ {erro}
+
+        {/* CABEÇALHO */}
+
+        <div className="dashboard-header">
+
+          <div>
+
+            <h1>
+              E aí, {usuario?.nome || "Marcos"}!
+            </h1>
+
+            <p>
+              Acompanhamento - Visão Geral
+            </p>
+
+          </div>
+
+        </div>
+
+
+        {/* CARDS */}
+
+        <div className="dashboard-cards">
+
+
+          <div className="dashboard-card">
+
+            <strong>
+              {dados?.totalAlunos}
+            </strong>
+
+            <span>
+              Alunos
+            </span>
+
+          </div>
+
+
+          <div className="dashboard-card attention">
+
+            <strong>
+              {dados?.alunosRisco}
+            </strong>
+
+            <span>
+              Em atenção
+            </span>
+
+          </div>
+
+
+          <div className="dashboard-card danger">
+
+            <strong>
+              {dados?.alunosAltoRisco}
+            </strong>
+
+            <span>
+              Alto Risco
+            </span>
+
+          </div>
+
+
+          <div className="dashboard-card success">
+
+            <strong>
+              {dados?.taxaFrequenciaGeral}%
+            </strong>
+
+            <span>
+              Frequência Geral
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+        {/* GRÁFICO */}
+
+        <div className="risk-chart-card">
+
+          <h2>
+            Evolução do risco de evasão
+          </h2>
+
+          <div className="risk-chart">
+
+            <svg
+              viewBox="0 0 700 220"
+              preserveAspectRatio="none"
+            >
+
+              <polyline
+                points="30,170 170,125 300,120 430,55 570,35"
+                fill="none"
+                stroke="#ffc66d"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+
+              <circle
+                cx="30"
+                cy="170"
+                r="5"
+                fill="#ffc66d"
+              />
+
+              <circle
+                cx="170"
+                cy="125"
+                r="5"
+                fill="#ffc66d"
+              />
+
+              <circle
+                cx="300"
+                cy="120"
+                r="5"
+                fill="#ffc66d"
+              />
+
+              <circle
+                cx="430"
+                cy="55"
+                r="5"
+                fill="#ffc66d"
+              />
+
+              <circle
+                cx="570"
+                cy="35"
+                r="5"
+                fill="#ffc66d"
+              />
+
+            </svg>
+
+          </div>
+
+        </div>
+
+
+        {/* PARTE INFERIOR */}
+
+        <div className="dashboard-bottom">
+
+
+          {/* ALUNOS EM ATENÇÃO */}
+
+          <div className="attention-card">
+
+            <h2>
+              Alunos que precisam de atenção
+            </h2>
+
+
+            <div className="attention-list">
+
+
+              {alertas.map((alerta, index) => (
+
+                <div
+                  className="attention-item"
+                  key={index}
+                >
+
+                  <div className="attention-student">
+
+                    <span
+                      className={`risk-dot ${alerta.nivel}`}
+                    ></span>
+
+                    <span>
+                      {alerta.aluno}
+                    </span>
+
+                  </div>
+
+
+                  <strong>
+                    {alerta.percentual}
+                  </strong>
+
+                </div>
+
+              ))}
+
+
+            </div>
+
+          </div>
+
+
+          {/* RISCO POR TURMA */}
+
+          <div className="class-risk-card">
+
+            <h2>
+              Risco por turma
+            </h2>
+
+
+            <div className="class-risk-list">
+
+
+              {riscoPorTurma.map((item, index) => (
+
+                <div
+                  className="class-risk-item"
+                  key={index}
+                >
+
+                  <span>
+                    {item.turma}
+                  </span>
+
+
+                  <div className="risk-bar">
+
+                    <div
+                      className="risk-bar-fill"
+                      style={{
+                        width: `${item.percentual}%`
+                      }}
+                    ></div>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+
+            </div>
+
+          </div>
+
+
+        </div>
+
 
       </div>
-
-    </DashboardLayout>
-  )
-
-}
-
-
-  return (
-
-    <DashboardLayout>
-
-
-      <div className="dashboard-header">
-
-        <div>
-
-          <h1>
-            Dashboard
-          </h1>
-
-          <p>
-            Bem-vindo ao PresenSee
-          </p>
-
-        </div>
-
-
-        <div className="user-info">
-
-          <strong>
-            {usuario?.nome}
-          </strong>
-
-          <span>
-            {usuario?.perfil}
-          </span>
-
-        </div>
-
-
-      </div>
-
-
-      <div className="system-status">
-
-        <p>
-          🟢 Reconhecimento facial online
-        </p>
-
-      </div>
-
-
-      <div className="cards-container">
-
-
-        <div className="card">
-
-          <h3>
-            Alunos cadastrados
-          </h3>
-
-          <p>
-            {dados?.totalAlunos}
-          </p>
-
-        </div>
-
-
-        <div className="card">
-
-          <h3>
-            Alunos em risco
-          </h3>
-
-          <p>
-            {dados?.alunosRisco}
-          </p>
-
-        </div>
-
-
-        <div className="card">
-
-          <h3>
-            Frequência Média
-          </h3>
-
-          <p>
-            {dados?.taxaFrequenciaGeral}%
-          </p>
-
-        </div>
-
-
-        <div className="card">
-
-          <h3>
-            Alertas Ativos
-          </h3>
-
-          <p>
-            {dados?.alertasAbertos}
-          </p>
-
-        </div>
-
-
-      </div>
-
-
-      <div className="alerts-section">
-
-        <h2>
-          Últimos Alertas
-        </h2>
-
-
-       {
-       alertas.map((alerta, index) => (
-
-    <div
-      className="alert-item"
-      key={index}
-    >
-
-      ⚠️ {alerta.aluno} — {alerta.motivo}
-
-    </div>
-
-  ))
-}
-
-      </div>
-
 
     </DashboardLayout>
 
