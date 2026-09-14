@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom"
+import { useRef, useState } from "react"
 import { getUsuario, logout } from "../services/auth"
 
 function Sidebar() {
@@ -6,11 +7,44 @@ function Sidebar() {
   const navigate = useNavigate()
   const usuario = getUsuario()
 
+  const [avatar, setAvatar] = useState(
+    localStorage.getItem("avatarUsuario") || ""
+  )
+
+  const inputAvatar = useRef(null)
+
   function handleLogout() {
 
     logout()
 
     navigate("/login")
+
+  }
+
+  function escolherAvatar(e) {
+
+    const arquivo = e.target.files[0]
+
+    if (!arquivo) {
+      return
+    }
+
+    const leitor = new FileReader()
+
+    leitor.onload = () => {
+
+      const imagem = leitor.result
+
+      setAvatar(imagem)
+
+      localStorage.setItem(
+        "avatarUsuario",
+        imagem
+      )
+
+    }
+
+    leitor.readAsDataURL(arquivo)
 
   }
 
@@ -83,9 +117,35 @@ function Sidebar() {
 
       <div className="sidebar-user">
 
-        <div className="sidebar-avatar">
-          👨‍💻
+        <div
+          className="sidebar-avatar"
+          onClick={() => inputAvatar.current.click()}
+          title="Alterar foto"
+        >
+
+          {avatar ? (
+            <img
+              src={avatar}
+              alt="Foto do usuário"
+            />
+          ) : (
+            "👨‍💻"
+          )}
+
+          <span className="avatar-camera">
+            📷
+          </span>
+
+          <input
+            ref={inputAvatar}
+            type="file"
+            accept="image/*"
+            onChange={escolherAvatar}
+            style={{ display: "none" }}
+          />
+
         </div>
+
 
         <div>
 
@@ -110,6 +170,7 @@ function Sidebar() {
       >
 
         ↪
+
         <span>
           Encerrar Sessão
         </span>

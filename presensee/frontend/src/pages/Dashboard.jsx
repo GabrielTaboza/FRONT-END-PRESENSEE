@@ -6,47 +6,68 @@ import { getUsuario, getToken } from "../services/auth"
 function Dashboard() {
 
   const [dados, setDados] = useState(null)
+
   const [usuario, setUsuario] = useState(null)
+
+  const [avatar, setAvatar] = useState(
+    localStorage.getItem("avatarUsuario") || ""
+  )
+
   const [carregando, setCarregando] = useState(true)
+
   const [erro, setErro] = useState("")
 
+
   const alertas = [
+
     {
       aluno: "João Silva",
       percentual: "87%",
       nivel: "alto"
     },
+
     {
       aluno: "Marcos Heitor",
       percentual: "82%",
       nivel: "alto"
     },
+
     {
       aluno: "João Silva",
       percentual: "65%",
       nivel: "medio"
     }
+
   ]
 
+
   const riscoPorTurma = [
+
     {
       turma: "3A",
       percentual: 70
     },
+
     {
       turma: "2B",
       percentual: 50
     },
+
     {
       turma: "1A",
       percentual: 30
     }
+
   ]
 
 
   useEffect(() => {
 
     setUsuario(getUsuario())
+
+    setAvatar(
+      localStorage.getItem("avatarUsuario") || ""
+    )
 
   }, [])
 
@@ -55,19 +76,27 @@ function Dashboard() {
 
     const token = getToken()
 
+
     if (token === "token-demo") {
 
       setDados({
+
         totalAlunos: 350,
+
         alunosRisco: 20,
+
         alunosAltoRisco: 7,
+
         taxaFrequenciaGeral: 95,
+
         alertasAbertos: 5
+
       })
 
       setCarregando(false)
 
       return
+
     }
 
 
@@ -96,9 +125,19 @@ function Dashboard() {
   }, [])
 
 
+  function atualizarAvatar() {
+
+    setAvatar(
+      localStorage.getItem("avatarUsuario") || ""
+    )
+
+  }
+
+
   if (carregando) {
 
     return (
+
       <DashboardLayout>
 
         <p>
@@ -106,6 +145,7 @@ function Dashboard() {
         </p>
 
       </DashboardLayout>
+
     )
 
   }
@@ -114,6 +154,7 @@ function Dashboard() {
   if (erro) {
 
     return (
+
       <DashboardLayout>
 
         <div className="dashboard-error">
@@ -123,6 +164,7 @@ function Dashboard() {
         </div>
 
       </DashboardLayout>
+
     )
 
   }
@@ -135,14 +177,17 @@ function Dashboard() {
       <div className="dashboard-page">
 
 
-        {/* CABEÇALHO */}
+        {/* =========================
+            CABEÇALHO
+        ========================= */}
 
         <div className="dashboard-header">
+
 
           <div>
 
             <h1>
-              E aí, {usuario?.nome || "Marcos"}!
+              E aí, {usuario?.nome || "Visitante"}!
             </h1>
 
             <p>
@@ -151,10 +196,54 @@ function Dashboard() {
 
           </div>
 
+
+          {/* USUÁRIO NO TOPO */}
+
+          <div
+            className="dashboard-user"
+            onClick={atualizarAvatar}
+            title="Foto do usuário"
+          >
+
+            <div className="dashboard-avatar">
+
+              {avatar ? (
+
+                <img
+                  src={avatar}
+                  alt="Foto do usuário"
+                />
+
+              ) : (
+
+                "👨‍💻"
+
+              )}
+
+            </div>
+
+
+            <div className="dashboard-user-info">
+
+              <strong>
+                {usuario?.nome || "Visitante"}
+              </strong>
+
+              <span>
+                Monitor
+              </span>
+
+            </div>
+
+          </div>
+
+
         </div>
 
 
-        {/* CARDS */}
+        {/* =========================
+            CARDS
+        ========================= */}
 
         <div className="dashboard-cards">
 
@@ -214,13 +303,17 @@ function Dashboard() {
         </div>
 
 
-        {/* GRÁFICO */}
+        {/* =========================
+            GRÁFICO
+        ========================= */}
 
         <div className="risk-chart-card">
+
 
           <h2>
             Evolução do risco de evasão
           </h2>
+
 
           <div className="risk-chart">
 
@@ -278,10 +371,13 @@ function Dashboard() {
 
           </div>
 
+
         </div>
 
 
-        {/* PARTE INFERIOR */}
+        {/* =========================
+            PARTE INFERIOR
+        ========================= */}
 
         <div className="dashboard-bottom">
 
@@ -289,6 +385,7 @@ function Dashboard() {
           {/* ALUNOS EM ATENÇÃO */}
 
           <div className="attention-card">
+
 
             <h2>
               Alunos que precisam de atenção
@@ -305,15 +402,21 @@ function Dashboard() {
                   key={index}
                 >
 
+
                   <div className="attention-student">
 
+
                     <span
-                      className={`risk-dot ${alerta.nivel}`}
+                      className={
+                        `risk-dot ${alerta.nivel}`
+                      }
                     ></span>
+
 
                     <span>
                       {alerta.aluno}
                     </span>
+
 
                   </div>
 
@@ -322,6 +425,7 @@ function Dashboard() {
                     {alerta.percentual}
                   </strong>
 
+
                 </div>
 
               ))}
@@ -329,12 +433,14 @@ function Dashboard() {
 
             </div>
 
+
           </div>
 
 
           {/* RISCO POR TURMA */}
 
           <div className="class-risk-card">
+
 
             <h2>
               Risco por turma
@@ -351,6 +457,7 @@ function Dashboard() {
                   key={index}
                 >
 
+
                   <span>
                     {item.turma}
                   </span>
@@ -358,14 +465,18 @@ function Dashboard() {
 
                   <div className="risk-bar">
 
+
                     <div
                       className="risk-bar-fill"
                       style={{
-                        width: `${item.percentual}%`
+                        width:
+                          `${item.percentual}%`
                       }}
                     ></div>
 
+
                   </div>
+
 
                 </div>
 
@@ -373,6 +484,7 @@ function Dashboard() {
 
 
             </div>
+
 
           </div>
 
