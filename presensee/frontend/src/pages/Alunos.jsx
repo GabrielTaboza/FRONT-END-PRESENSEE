@@ -5,337 +5,74 @@ import { useNavigate } from "react-router-dom"
 
 function Alunos() {
 
-  const navigate = useNavigate()
 
+  const [alunos, setAlunos] = useState([
+
+    {
+      nome: "Maria Joaquina",
+      matricula: "001",
+      turma: "3A",
+      frequencia: 95,
+      risco: "Baixo"
+    },
+
+    {
+      nome: "João Silva",
+      matricula: "002",
+      turma: "2B",
+      frequencia: 87,
+      risco: "Baixo"
+    },
+
+    {
+      nome: "Marcos Heitor",
+      matricula: "003",
+      turma: "3A",
+      frequencia: 82,
+      risco: "Médio"
+    },
+
+    {
+      nome: "Ana Beatriz",
+      matricula: "004",
+      turma: "1A",
+      frequencia: 76,
+      risco: "Médio"
+    },
+
+    {
+      nome: "Pedro Henrique",
+      matricula: "005",
+      turma: "2B",
+      frequencia: 66,
+      risco: "Alto"
+    },
+
+    {
+      nome: "Gabriel Soares",
+      matricula: "006",
+      turma: "2B",
+      frequencia: 65,
+      risco: "Alto"
+    }
 
-  /* =========================
-     ALUNOS DE DEMONSTRAÇÃO
-  ========================= */
-
-  const [alunos, setAlunos] = useState(() => {
-
-    const nomes = [
-      "Maria Joaquina",
-      "João Silva",
-      "Marcos Heitor",
-      "Ana Beatriz",
-      "Pedro Henrique",
-      "Gabriel Soares",
-      "Miguel Augusto",
-      "Lucas Almeida",
-      "Juliana Santos",
-      "Beatriz Oliveira"
-    ]
-
-
-    const turmas = [
-      "1A",
-      "2B",
-      "3A"
-    ]
-
-
-    const frequencias = [
-      95,
-      87,
-      82,
-      76,
-      66,
-      65,
-      92,
-      88,
-      74,
-      98
-    ]
-
-
-    return Array.from(
-      { length: 350 },
-      (_, index) => {
-
-        const frequencia =
-          frequencias[index % frequencias.length]
-
-
-        let risco = "Baixo"
-
-
-        if (frequencia < 70) {
-
-          risco = "Alto"
-
-        } else if (frequencia < 85) {
-
-          risco = "Médio"
-
-        }
-
-
-        return {
-
-          nome:
-            nomes[index % nomes.length],
-
-          matricula:
-            String(index + 1).padStart(3, "0"),
-
-          turma:
-            turmas[index % turmas.length],
-
-          frequencia:
-            frequencia,
-
-          risco:
-            risco
-
-        }
-
-      }
-    )
-
-  })
-
-
-  /* =========================
-     FILTROS
-  ========================= */
-
-  const [busca, setBusca] = useState("")
-
-  const [turmaFiltro, setTurmaFiltro] =
-    useState("")
-
-  const [riscoFiltro, setRiscoFiltro] =
-    useState("")
-
-  const [frequenciaFiltro, setFrequenciaFiltro] =
-    useState("")
-
-
-  /* =========================
-     PAGINAÇÃO
-  ========================= */
-
-  const [paginaAtual, setPaginaAtual] =
-    useState(1)
-
-  const alunosPorPagina = 5
-
-
-  /* =========================
-     EDIÇÃO
-  ========================= */
-
-  const [alunoEditando, setAlunoEditando] =
-    useState(null)
-
-
-  /* =========================
-     FILTRAGEM
-  ========================= */
-
-  const alunosFiltrados = useMemo(() => {
-
-    return alunos.filter((aluno) => {
-
-      const correspondeBusca =
-        aluno.nome
-          .toLowerCase()
-          .includes(busca.toLowerCase())
-
-
-      const correspondeTurma =
-        turmaFiltro === "" ||
-        aluno.turma === turmaFiltro
-
-
-      const correspondeRisco =
-        riscoFiltro === "" ||
-        aluno.risco === riscoFiltro
-
-
-      let correspondeFrequencia = true
-
-
-      if (frequenciaFiltro === "alta") {
-
-        correspondeFrequencia =
-          aluno.frequencia >= 85
-
-      }
-
-
-      if (frequenciaFiltro === "media") {
-
-        correspondeFrequencia =
-          aluno.frequencia >= 70 &&
-          aluno.frequencia < 85
-
-      }
-
-
-      if (frequenciaFiltro === "baixa") {
-
-        correspondeFrequencia =
-          aluno.frequencia < 70
-
-      }
-
-
-      return (
-        correspondeBusca &&
-        correspondeTurma &&
-        correspondeRisco &&
-        correspondeFrequencia
-      )
-
-    })
-
-  }, [
-    alunos,
-    busca,
-    turmaFiltro,
-    riscoFiltro,
-    frequenciaFiltro
   ])
 
 
-  /* =========================
-     PAGINAÇÃO
-  ========================= */
-
-  const totalPaginas =
-    Math.ceil(
-      alunosFiltrados.length /
-      alunosPorPagina
-    )
+  const [alunoSelecionado, setAlunoSelecionado] =
+    useState(null)
 
 
-  const indiceInicial =
-    (paginaAtual - 1) *
-    alunosPorPagina
+  function abrirAluno(aluno) {
 
-
-  const alunosPagina =
-    alunosFiltrados.slice(
-      indiceInicial,
-      indiceInicial + alunosPorPagina
-    )
-
-
-  /* =========================
-     ALTERAR FILTRO
-  ========================= */
-
-  function alterarFiltro(setter, valor) {
-
-    setter(valor)
-
-    setPaginaAtual(1)
+    setAlunoSelecionado(aluno)
 
   }
 
 
-  /* =========================
-     EDITAR
-  ========================= */
+  function fecharAluno() {
 
-  function editarAluno(aluno) {
-
-    setAlunoEditando({
-      ...aluno
-    })
-
-  }
-
-
-  /* =========================
-     SALVAR EDIÇÃO
-  ========================= */
-
-  function salvarEdicao() {
-
-    setAlunos(
-
-      alunos.map((aluno) => {
-
-        if (
-          aluno.matricula ===
-          alunoEditando.matricula
-        ) {
-
-          return alunoEditando
-
-        }
-
-        return aluno
-
-      })
-
-    )
-
-    setAlunoEditando(null)
-
-  }
-
-
-  /* =========================
-     EXCLUIR
-  ========================= */
-
-  function excluirAluno(matricula) {
-
-    const confirmar =
-      window.confirm(
-        "Tem certeza que deseja excluir este aluno?"
-      )
-
-
-    if (!confirmar) {
-      return
-    }
-
-
-    setAlunos(
-
-      alunos.filter(
-        (aluno) =>
-          aluno.matricula !== matricula
-      )
-
-    )
-
-  }
-
-
-  /* =========================
-     PAGINAÇÃO
-  ========================= */
-
-  function voltarPagina() {
-
-    if (paginaAtual > 1) {
-
-      setPaginaAtual(
-        paginaAtual - 1
-      )
-
-    }
-
-  }
-
-
-  function avancarPagina() {
-
-    if (
-      paginaAtual < totalPaginas
-    ) {
-
-      setPaginaAtual(
-        paginaAtual + 1
-      )
-
-    }
+    setAlunoSelecionado(null)
 
   }
 
@@ -344,149 +81,95 @@ function Alunos() {
 
     <DashboardLayout>
 
+
       <div className="alunos-page">
 
 
-        {/* =========================
-            CABEÇALHO
-        ========================= */}
-
         <div className="alunos-header">
 
-          <div className="alunos-header-text">
+          <div>
 
-            <div className="alunos-avatar">
-              👨‍💻
-            </div>
+            <h1>
+              Olá, Visitante!
+            </h1>
 
-
-            <div>
-
-              <h1>
-                Olá, Marcos!
-              </h1>
-
-              <p>
-                Alunos
-              </p>
-
-            </div>
+            <p>
+              Alunos
+            </p>
 
           </div>
 
         </div>
 
 
-        {/* =========================
-            BUSCA
-        ========================= */}
-
-        <div className="student-search">
-
-          <input
-            type="text"
-            placeholder="Buscar aluno..."
-            value={busca}
-            onChange={(e) =>
-              alterarFiltro(
-                setBusca,
-                e.target.value
-              )
-            }
-          />
-
-        </div>
+        <input
+          className="search-aluno"
+          type="text"
+          placeholder="Buscar aluno..."
+        />
 
 
-        {/* =========================
-            FILTROS
-        ========================= */}
-
-        <div className="student-filters">
+        <div className="filters">
 
 
-          <select
-            value={turmaFiltro}
-            onChange={(e) =>
-              alterarFiltro(
-                setTurmaFiltro,
-                e.target.value
-              )
-            }
-          >
+          <select>
 
-            <option value="">
+            <option>
               Turma
             </option>
 
-            <option value="1A">
+            <option>
               1A
             </option>
 
-            <option value="2B">
+            <option>
               2B
             </option>
 
-            <option value="3A">
+            <option>
               3A
             </option>
 
           </select>
 
 
-          <select
-            value={riscoFiltro}
-            onChange={(e) =>
-              alterarFiltro(
-                setRiscoFiltro,
-                e.target.value
-              )
-            }
-          >
+          <select>
 
-            <option value="">
+            <option>
               Nível de risco
             </option>
 
-            <option value="Baixo">
+            <option>
               Baixo
             </option>
 
-            <option value="Médio">
+            <option>
               Médio
             </option>
 
-            <option value="Alto">
+            <option>
               Alto
             </option>
 
           </select>
 
 
-          <select
-            value={frequenciaFiltro}
-            onChange={(e) =>
-              alterarFiltro(
-                setFrequenciaFiltro,
-                e.target.value
-              )
-            }
-          >
+          <select>
 
-            <option value="">
+            <option>
               Frequência
             </option>
 
-            <option value="alta">
-              Alta
+            <option>
+              Acima de 80%
             </option>
 
-            <option value="media">
-              Média
+            <option>
+              Entre 70% e 80%
             </option>
 
-            <option value="baixa">
-              Baixa
+            <option>
+              Abaixo de 70%
             </option>
 
           </select>
@@ -495,291 +178,282 @@ function Alunos() {
         </div>
 
 
-        {/* =========================
-            FORMULÁRIO DE EDIÇÃO
-        ========================= */}
-
-        {alunoEditando && (
-
-          <div className="edit-form">
-
-            <h2>
-              Editar aluno
-            </h2>
+        <table className="students-table">
 
 
-            <input
-              type="text"
-              value={alunoEditando.nome}
-              onChange={(e) =>
-                setAlunoEditando({
-                  ...alunoEditando,
-                  nome: e.target.value
-                })
-              }
-            />
+          <thead>
+
+            <tr>
+
+              <th>
+                Aluno
+              </th>
+
+              <th>
+                Turma
+              </th>
+
+              <th>
+                Frequência
+              </th>
+
+              <th>
+                Risco
+              </th>
+
+            </tr>
+
+          </thead>
 
 
-            <input
-              type="text"
-              value={alunoEditando.turma}
-              onChange={(e) =>
-                setAlunoEditando({
-                  ...alunoEditando,
-                  turma: e.target.value
-                })
-              }
-            />
+          <tbody>
 
+            {alunos.map((aluno) => (
 
-            <input
-              type="number"
-              value={alunoEditando.frequencia}
-              onChange={(e) =>
-                setAlunoEditando({
-                  ...alunoEditando,
-                  frequencia:
-                    Number(e.target.value)
-                })
-              }
-            />
+              <tr
+                key={aluno.matricula}
+                onClick={() => abrirAluno(aluno)}
+              >
 
+                <td>
+                  {aluno.nome}
+                </td>
 
-            <select
-              value={alunoEditando.risco}
-              onChange={(e) =>
-                setAlunoEditando({
-                  ...alunoEditando,
-                  risco: e.target.value
-                })
-              }
-            >
+                <td>
+                  {aluno.turma}
+                </td>
 
-              <option value="Baixo">
-                Baixo
-              </option>
+                <td>
+                  {aluno.frequencia}%
+                </td>
 
-              <option value="Médio">
-                Médio
-              </option>
+                <td>
 
-              <option value="Alto">
-                Alto
-              </option>
+                  <span
+                    className={
+                      `risk-status ${aluno.risco.toLowerCase()}`
+                    }
+                  >
 
-            </select>
+                    <span className="risk-dot"></span>
 
+                    {aluno.risco}
 
-            <button
-              className="save-button"
-              onClick={salvarEdicao}
-            >
-              Salvar
-            </button>
+                  </span>
 
-
-            <button
-              className="cancel-button"
-              onClick={() =>
-                setAlunoEditando(null)
-              }
-            >
-              Cancelar
-            </button>
-
-          </div>
-
-        )}
-
-
-        {/* =========================
-            TABELA
-        ========================= */}
-
-        <div className="students-table-container">
-
-          <table className="students-table">
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Aluno
-                </th>
-
-                <th>
-                  Turma
-                </th>
-
-                <th>
-                  Frequência
-                </th>
-
-                <th>
-                  Risco
-                </th>
-
-                <th>
-                  Ações
-                </th>
+                </td>
 
               </tr>
 
-            </thead>
+            ))}
+
+          </tbody>
 
 
-            <tbody>
-
-              {alunosPagina.map((aluno) => (
-
-                <tr
-                  key={aluno.matricula}
-                >
-
-                  <td>
-                    {aluno.nome}
-                  </td>
+        </table>
 
 
-                  <td>
-                    {aluno.turma}
-                  </td>
-
-
-                  <td>
-                    {aluno.frequencia}%
-                  </td>
-
-
-                  <td>
-
-                    <div className="risk-cell">
-
-                      <span
-                        className={
-                          `risk-dot ${aluno.risco.toLowerCase()}`
-                        }
-                      ></span>
-
-                      {aluno.risco}
-
-                    </div>
-
-                  </td>
-
-
-                  <td>
-
-                    <div className="student-actions">
-
-                      <button
-                        className="edit-button"
-                        onClick={() =>
-                          editarAluno(aluno)
-                        }
-                      >
-                        Editar
-                      </button>
-
-
-                      <button
-                        className="delete-button"
-                        onClick={() =>
-                          excluirAluno(
-                            aluno.matricula
-                          )
-                        }
-                      >
-                        Excluir
-                      </button>
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-
-        {/* =========================
-            PAGINAÇÃO
-        ========================= */}
-
-        <div className="students-pagination">
+        <div className="pagination">
 
           <span>
-
-            {alunosFiltrados.length === 0
-
-              ? "0 - 0 de 0"
-
-              : `${indiceInicial + 1} - ${Math.min(
-                  indiceInicial +
-                    alunosPorPagina,
-                  alunosFiltrados.length
-                )} de ${
-                  alunosFiltrados.length
-                }`
-
-            }
-
+            1 - 6 de 350
           </span>
 
+          <button>
+            ‹
+          </button>
 
-          <div className="pagination-buttons">
+          <button className="current-page">
+            1
+          </button>
 
-            <button
-              onClick={voltarPagina}
-              disabled={paginaAtual === 1}
-            >
-              ‹
-            </button>
+          <span>
+            de 70
+          </span>
 
-
-            <span className="current-page">
-              {paginaAtual}
-            </span>
-
-
-            <span>
-              de
-            </span>
-
-
-            <span>
-              {totalPaginas}
-            </span>
-
-
-            <button
-              onClick={avancarPagina}
-              disabled={
-                paginaAtual ===
-                totalPaginas
-              }
-            >
-              ›
-            </button>
-
-          </div>
+          <button>
+            ›
+          </button>
 
         </div>
 
 
       </div>
 
+
+      {/* =========================
+          POP-UP DO ALUNO
+      ========================= */}
+
+      {alunoSelecionado && (
+
+        <div
+          className="student-modal-overlay"
+          onClick={fecharAluno}
+        >
+
+
+          <div
+            className="student-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+
+            <button
+              className="close-modal"
+              onClick={fecharAluno}
+            >
+              ×
+            </button>
+
+
+            <div className="student-modal-header">
+
+
+              <div className="student-avatar">
+                👤
+              </div>
+
+
+              <div>
+
+                <h2>
+                  {alunoSelecionado.nome}
+                </h2>
+
+                <p>
+                  {alunoSelecionado.turma}
+                </p>
+
+              </div>
+
+
+              <span
+                className={
+                  `modal-risk ${alunoSelecionado.risco.toLowerCase()}`
+                }
+              >
+                Risco {alunoSelecionado.risco}
+              </span>
+
+
+            </div>
+
+
+            <div className="student-summary">
+
+
+              <div>
+
+                <strong>
+                  5.0
+                </strong>
+
+                <span>
+                  Média geral
+                </span>
+
+              </div>
+
+
+              <div>
+
+                <strong>
+                  4
+                </strong>
+
+                <span>
+                  Ocorrências
+                </span>
+
+              </div>
+
+
+              <div className="frequency-summary">
+
+                <strong>
+                  {alunoSelecionado.frequencia}%
+                </strong>
+
+                <span>
+                  Frequência geral
+                </span>
+
+              </div>
+
+
+            </div>
+
+
+            <div className="risk-reason">
+
+              <h3>
+                Por que este aluno está em risco?
+              </h3>
+
+
+              <div>
+                🟡 Frequência caindo progressivamente
+              </div>
+
+              <div>
+                🟡 Queda das notas
+              </div>
+
+              <div>
+                🟡 Faltas recentes
+              </div>
+
+              <div>
+                🟡 Ocorrências recentes
+              </div>
+
+
+            </div>
+
+
+            <div className="student-actions">
+
+
+              <button>
+                📝
+                <span>
+                  Notas
+                </span>
+              </button>
+
+
+              <button>
+                📋
+                <span>
+                  Ocorrências
+                </span>
+              </button>
+
+
+              <button>
+                📖
+                <span>
+                  Diário do monitor
+                </span>
+              </button>
+
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      )}
+
+
     </DashboardLayout>
 
   )
 
 }
+
 
 export default Alunos
